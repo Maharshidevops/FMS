@@ -1,0 +1,19 @@
+{
+  "name": "file-management-system",
+  "version": "1.0.0",
+  "description": "File Management System with large file support",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "formidable": "^3.5.4",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

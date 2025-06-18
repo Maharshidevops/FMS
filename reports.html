@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Management System - Reports</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/reports.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="images/logo.png" alt="Company Logo" class="sidebar-logo">
+                <h2>File Manager</h2>
+            </div>
+            <div class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="upload.html" class="menu-item">
+                    <i class="fas fa-upload"></i>
+                    <span>Upload Files</span>
+                </a>
+                <a href="reports.html" class="menu-item active">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1 class="page-title">Reports Panel</h1>
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/40" alt="User Profile">
+                    <div class="user-info">
+                        <span class="username">User Admin</span>
+                        <a href="index.html" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Category Tabs -->
+            <div class="report-tabs">
+                <button class="report-tab-btn active" data-tab="usage">Usage Statistics</button>
+                <button class="report-tab-btn" data-tab="activity">Activity Logs</button>
+                <button class="report-tab-btn" data-tab="system">System Reports</button>
+            </div>
+
+            <!-- Report Sections -->
+            <div class="report-container">
+                <!-- Usage Statistics Section -->
+                <div class="report-section active" id="usageSection">
+                    <div class="report-grid">
+                        <!-- Storage Usage -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-database"></i> Storage Usage</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-filter-btn" id="storageFilterBtn">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <canvas id="storageUsageChart"></canvas>
+                            </div>
+                            <div class="report-card-footer">
+                                <span class="report-summary">Total Storage: <span id="totalStorage">0 KB</span></span>
+                            </div>
+                        </div>
+
+                        <!-- Most Accessed Files -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-eye"></i> Most Accessed Files</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="report-list" id="mostAccessedList">
+                                    <div class="loading-indicator">Loading data...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Largest Files -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-weight-hanging"></i> Largest Files</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="report-list" id="largestFilesList">
+                                    <div class="loading-indicator">Loading data...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Storage Trends -->
+                        <div class="report-card full-width">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-chart-line"></i> Storage Trends</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-range-btn active" data-range="week">Week</button>
+                                    <button class="report-range-btn" data-range="month">Month</button>
+                                    <button class="report-range-btn" data-range="year">Year</button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <canvas id="storageTrendsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Logs Section -->
+                <div class="report-section" id="activitySection">
+                    <div class="report-grid">
+                        <!-- Recent Operations -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-history"></i> Recent Operations</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-filter-btn" id="operationsFilterBtn">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="report-table-container">
+                                    <table class="report-table" id="operationsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Operation</th>
+                                                <th>File</th>
+                                                <th>User</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="4" class="empty-state">No recent operations</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Activity -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-users"></i> User Activity</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <canvas id="userActivityChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Access Attempts -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-shield-alt"></i> Access Attempts</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-range-btn active" data-range="day">Day</button>
+                                    <button class="report-range-btn" data-range="week">Week</button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="access-summary">
+                                    <div class="access-stat">
+                                        <span class="access-number success">24</span>
+                                        <span class="access-label">Successful</span>
+                                    </div>
+                                    <div class="access-stat">
+                                        <span class="access-number failed">3</span>
+                                        <span class="access-label">Failed</span>
+                                    </div>
+                                </div>
+                                <canvas id="accessAttemptsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Version History -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-code-branch"></i> Version History</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-filter-btn" id="versionFilterBtn">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="report-table-container">
+                                    <table class="report-table" id="versionTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>File</th>
+                                                <th>Version</th>
+                                                <th>Changed By</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="5" class="empty-state">No version history available</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Reports Section -->
+                <div class="report-section" id="systemSection">
+                    <div class="report-grid">
+                        <!-- Backup Status -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-hdd"></i> Backup Status</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="backup-status">
+                                    <div class="backup-info">
+                                        <div class="backup-label">Last Backup</div>
+                                        <div class="backup-value" id="lastBackupDate">May 18, 2025 09:30 AM</div>
+                                    </div>
+                                    <div class="backup-info">
+                                        <div class="backup-label">Status</div>
+                                        <div class="backup-value success" id="backupStatus">Successful</div>
+                                    </div>
+                                    <div class="backup-info">
+                                        <div class="backup-label">Size</div>
+                                        <div class="backup-value" id="backupSize">245 MB</div>
+                                    </div>
+                                </div>
+                                <div class="backup-schedule">
+                                    <div class="schedule-header">Backup Schedule</div>
+                                    <div class="schedule-item">
+                                        <span class="schedule-day">Daily</span>
+                                        <span class="schedule-time">2:00 AM</span>
+                                        <span class="schedule-status enabled">Enabled</span>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <span class="schedule-day">Weekly (Sunday)</span>
+                                        <span class="schedule-time">1:00 AM</span>
+                                        <span class="schedule-status enabled">Enabled</span>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <span class="schedule-day">Monthly (1st)</span>
+                                        <span class="schedule-time">12:00 AM</span>
+                                        <span class="schedule-status enabled">Enabled</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File Integrity -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-check-double"></i> File Integrity</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-action-btn primary" id="runIntegrityBtn">
+                                        Run Check
+                                    </button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="integrity-summary">
+                                    <div class="integrity-status">
+                                        <i class="fas fa-check-circle integrity-icon"></i>
+                                        <div class="integrity-details">
+                                            <span class="integrity-result">All files verified</span>
+                                            <span class="integrity-date">Last check: May 19, 2025 06:12 AM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="integrity-stats">
+                                    <div class="integrity-stat">
+                                        <div class="stat-value">156</div>
+                                        <div class="stat-label">Files Checked</div>
+                                    </div>
+                                    <div class="integrity-stat">
+                                        <div class="stat-value">156</div>
+                                        <div class="stat-label">Verified</div>
+                                    </div>
+                                    <div class="integrity-stat">
+                                        <div class="stat-value">0</div>
+                                        <div class="stat-label">Issues</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Performance -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-tachometer-alt"></i> System Performance</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-range-btn active" data-range="day">Day</button>
+                                    <button class="report-range-btn" data-range="week">Week</button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="performance-metrics">
+                                    <div class="performance-metric">
+                                        <div class="metric-name">CPU Usage</div>
+                                        <div class="metric-value">32%</div>
+                                        <div class="metric-chart">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: 32%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="performance-metric">
+                                        <div class="metric-name">Memory Usage</div>
+                                        <div class="metric-value">48%</div>
+                                        <div class="metric-chart">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: 48%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="performance-metric">
+                                        <div class="metric-name">Disk I/O</div>
+                                        <div class="metric-value">15%</div>
+                                        <div class="metric-chart">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: 15%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Error Logs -->
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <h3><i class="fas fa-exclamation-triangle"></i> Error Logs</h3>
+                                <div class="report-card-actions">
+                                    <button class="report-filter-btn" id="errorFilterBtn">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                    <button class="report-export-btn">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-card-content">
+                                <div class="error-summary">
+                                    <div class="error-stat">
+                                        <div class="stat-value error">2</div>
+                                        <div class="stat-label">Critical</div>
+                                    </div>
+                                    <div class="error-stat">
+                                        <div class="stat-value warning">5</div>
+                                        <div class="stat-label">Warnings</div>
+                                    </div>
+                                    <div class="error-stat">
+                                        <div class="stat-value info">12</div>
+                                        <div class="stat-label">Info</div>
+                                    </div>
+                                </div>
+                                <div class="report-table-container">
+                                    <table class="report-table" id="errorTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Type</th>
+                                                <th>Message</th>
+                                                <th>Source</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="error-row error">
+                                                <td>9:15 AM</td>
+                                                <td><span class="error-badge critical">Critical</span></td>
+                                                <td>Database connection failure</td>
+                                                <td>FileServer</td>
+                                            </tr>
+                                            <tr class="error-row warning">
+                                                <td>8:42 AM</td>
+                                                <td><span class="error-badge warning">Warning</span></td>
+                                                <td>Slow query performance detected</td>
+                                                <td>QueryService</td>
+                                            </tr>
+                                            <tr class="error-row info">
+                                                <td>8:30 AM</td>
+                                                <td><span class="error-badge info">Info</span></td>
+                                                <td>System backup initiated</td>
+                                                <td>BackupService</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="js/app-settings.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
